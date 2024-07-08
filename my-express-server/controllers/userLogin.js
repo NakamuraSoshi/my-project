@@ -5,10 +5,10 @@ const { secretKey } = require('../config/authConfig');
 
 // ログイン処理
 const loginUser = (req, res) => {
-  const { username, password } = req.body;
+  const { userId, password } = req.body;
 
-  //ユーザーネームをDBから探す
-  User.findByUsername(username, (err, user) => {
+  //ユーザーIdをDBから探す
+  User.findByUsername(userId, (err, user) => {
     if (err) {
       return res.status(500).json({ message: 'エラーが発生しました' });
     }
