@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",                         // Chromeを使用する設定
+      "request": "launch",                      // デバッグを開始するときのアクション
+      "name": "Launch Chrome against localhost", // デバッグセッションの名前
+      "url": "http://localhost:3000",           // 起動するURL
+      "webRoot": "${workspaceFolder}/src"        // ソースコードのルートディレクトリ
+    }
+  ]
+}
