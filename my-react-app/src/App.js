@@ -1,15 +1,19 @@
 //アプリのメインコンポーネント
 
 import React from 'react';
-import Register from './components/Register';
 import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
+import LogoutForm from './components/LogoutForm';
+import UserDeleteForm from './components/UserDeleteForm';
 
 const App = () => {
     return (
         <div>
             <h1>ブログプラットフォーム</h1>
-            <Register />
+            <RegisterForm/>
             <LoginForm />
+            <LogoutForm/>
+            <UserDeleteForm/>
         </div>
     );
 };
