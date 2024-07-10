@@ -8,12 +8,24 @@ const User = {
     db.query(query, [userId, username,hashedPassword], callback);
   },
   //findByUserNameメソッドでユーザー名の情報を取得
-  findByUsername: (username, callback)=>{
+  findByUsername: (username, callback) => {
     const query = 'SELECT * FROM users WHERE username = ?';
-    db.query(query,[username],callback)
+    db.query(query, [username], callback);
+  },
+
+  // ユーザーIDでユーザーを検索
+  findByUserId: (userId, callback) => {
+    const query = 'SELECT * FROM users WHERE userId = ?';
+    db.query(query, [userId], callback);
+  },
+
+  //ユーザー削除
+  delete: (userId, callback) => {
+    const query = 'DELETE FROM users WHERE userId = ?';
+    db.query(query, [userId], callback);
   }
 };
 
-//Userオブジェをエクスポート
+// Userオブジェクトをエクスポート
 module.exports = User;
 
