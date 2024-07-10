@@ -1,15 +1,22 @@
 //エンドポイントの定義
 
-//expressフレームワークをrequire関数で読み込み代入
+//expressオブジェクトを生成
 const express = require('express');
 
-//express.Routerw呼び出してルーターオブジェクトを作成し、代入
+//express.Routerを呼び出してルーターオブジェクトを作成し、代入
 const router = express.Router();
 
-//register関数をrequireで読み込み
+//requireでそれぞれのコントローラー関数を読み込み
 const { registerUser } = require('../controllers/userRegister');
+const { loginUser } = require('../controllers/userLogin');
+const { logoutUser } = require('../controllers/userLogout');
+const verifyToken = require('../middleware/authJwt');
+const { deleteUser } = require('../controllers/userDelete');
 
-//post()メソッドでHTTP POSTメソッドを受け付けるルーティングを設定、'/register'パスに送信されると関数を実行
+//ルーティングを設定、パスにリクエストが送信されると関数を実行
 router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/logout', verifyToken, logoutUser);
+router.post('/delete', verifyToken, deleteUser);
 
 module.exports = router;
