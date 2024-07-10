@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputField = ({ label, type, value, onChange }) => {
+const InputField = ({ label, type, value, onChange, error }) => {
   return (
     <div>
       <label>{label}</label>
@@ -9,6 +9,7 @@ const InputField = ({ label, type, value, onChange }) => {
         value={value}
         onChange={onChange}
       />
+    {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
