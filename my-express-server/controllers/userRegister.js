@@ -9,19 +9,25 @@ const registerUser = async (req, res) => {
   if (!userId || !username || !password) {
       return res.status(400).json({ message: 'ユーザーID、ユーザー名、パスワードすべて入力必須です' });
   }
+  try {
+    // 10回のソルト付きハッシュ化
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  //10回のソルト付きハッシュ化,awaitで非同期に
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  //User.createを呼び出しユーザーをDBに登録、最後にレスポンスを返却
-  User.create(userId, username, hashedPassword, (err, result) =>{
-    if (err) {
-      return res.status(500).json({ message: 'ユーザー登録に失敗しました' });
+    // User.createを呼び出しユーザーをDBに登録
+    User.create(userId, username, hashedPassword, (err, result) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ message: 'ユーザー登録に失敗しました' });
+      }
+      // 登録成功時のレスポンス
+      res.status(201).json({ message: 'ユーザー登録に成功しました' });
+    });
+  } catch (error) {
+    console.error('Hashing error:', error);
+    return res.status(500).json({ message: 'パスワードのハッシュ化に失敗しました' });
   }
-  res.status(201).json({ message: 'ユーザー登録に成功しました' });
-});
 };
 
 module.exports = {
-registerUser
+  registerUser
 };
