@@ -7,16 +7,18 @@ const { secretKey } = require('../config/authConfig');
 const loginUser = (req, res) => {
   const { userId, password } = req.body;
 
-  //ユーザーIdをDBから探す
-  User.findByUsername(userId, (err, user) => {
+  //ユーザーをDBから探す
+  User.findByUserId(userId, (err, users) => {
     if (err) {
       return res.status(500).json({ message: 'エラーが発生しました' });
     }
-    if (!user) {
+    if (!users || users.length === 0) {
       return res.status(401).json({ message: 'ユーザー名またはパスワードが無効です' });
     }
 
-    // パスワードの比較
+    const user = users[0];
+
+    // パスワードの比較 compareでパスワードから変換するHash値が分かる
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) {
         return res.status(500).json({ message: 'エラーが発生しました' });
@@ -25,10 +27,13 @@ const loginUser = (req, res) => {
         return res.status(401).json({ message: 'ユーザー名またはパスワードが無効です' });
       }
 
-      // JWT トークンの生成
+      // JWT トークンの生成 ペイロード情報にIdと名前を含む secretkeyで署名
       const token = jwt.sign({ userId: user.userId, username: user.username }, secretKey, {
         expiresIn: '1h' // トークンの有効期限
+        
       });
+
+      console.log('生成されたトークン:', token);//確認用
 
       // トークンをクライアントに送信
       res.status(200).json({ token });
