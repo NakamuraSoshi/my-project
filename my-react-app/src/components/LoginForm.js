@@ -3,6 +3,7 @@ import axios from 'axios';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 
+//useStateで状態管理
 const LoginForm = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +16,7 @@ const LoginForm = () => {
         userId,
         password
       });
+      //ログイン成功でサーバーから返されたJWTトークンをローカルストレージに保存
       setMessage('ログインに成功しました');
        localStorage.setItem('token', response.data.token);
     } catch (error) {
