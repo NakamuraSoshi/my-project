@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import SubmitButton from './SubmitButton';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutForm = () => {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleLogout = async (event) => {
     event.preventDefault(); 
@@ -30,6 +32,7 @@ const LogoutForm = () => {
       setMessage(response.data.message); 
       localStorage.removeItem('token'); 
       console.log('ログアウトしました'); //確認用
+      navigate('/');
     } catch (error) {
       console.error('ログアウト時にエラーが発生しました', error);
     }
