@@ -1,0 +1,127 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#sidebar {
+  position: fixed;
+  left: -280px;  /* 初期状態は非表示 */
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: #f4f4f4;
+  padding: 80px 20px 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+#sidebar.open {
+  transform: translateX(280px);  
+}
+
+#sidebarToggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+#sidebar h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#sidebar form {
+  margin-bottom: 20px;
+}
+
+#sidebar input[type="search"] {
+  width: calc(100% - 20px);
+  padding: 5px;
+}
+
+#sidebar button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#sidebar button:hover {
+  background-color: #0056b3;
+}
+
+#sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#sidebar nav ul li {
+  margin-bottom: 10px;
+}
+
+#sidebar nav ul li a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+#sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+#detail {
+  margin-left: 270px;
+  padding: 15px;
+}
+
+
+.snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+.snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.snackbar.success {
+  background-color: #4CAF50; 
+}
+
+.snackbar.error {
+  background-color: #f44336; 
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
