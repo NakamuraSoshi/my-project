@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { useSidebar } from '../contexts/SidebarContext';
 import { AuthContext } from '../contexts/AuthContext';
 import '../styles/style.css';
@@ -10,7 +11,7 @@ const Sidebar = () => {
 
   return (
     <div id="sidebar" className={sidebarOpen ? 'open' : ''}>
-      
+    {isLoggedIn && (
       <div>
         <form id="search-form" role="search">
           <input
@@ -23,10 +24,11 @@ const Sidebar = () => {
           <div id="search-spinner" aria-hidden hidden={true} />
           <div className="sr-only" aria-live="polite"></div>
         </form>
-        <form method="post">
+        <Link to="/create">
           <button type="submit">新規作成</button>
-        </form>
+        </Link>
       </div>
+    )}
       <nav>
         <ul>
           {!isLoggedIn ? (
