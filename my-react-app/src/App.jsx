@@ -8,6 +8,7 @@ import LogoutForm from './components/LogoutForm';
 import { SidebarProvider } from './contexts/SidebarContext';
 import Snackbar from './components/Snackbar';
 import { AuthProvider } from './contexts/AuthContext';
+import NewPost from './components/NewPost';
 
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
                             <Route path='register' element={<RegisterForm showMessage={showMessage} />} />
                             <Route path='logout' element={<LogoutForm showMessage={showMessage} />} />
                             <Route path='delete' element={<UserDeleteForm showMessage={showMessage} />} />
+                            <Route path='create' element={<NewPost showMessage={showMessage} />} />
                         </Route>
                     </Routes>
                 </Router>
