@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
     //AuthContext.ProviderでisLoggedInの値を子に渡す
     return (
-        <AuthContext.Provider value={{ isLoggedIn}}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn}}>
             {children}
         </AuthContext.Provider>
     );
