@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/user.css';
 import Snackbar from './Snackbar';
+import { AuthContext } from '../contexts/AuthContext';
 
 //useStateで状態管理
 const LoginForm = ({ showMessage }) => {
@@ -12,8 +13,8 @@ const LoginForm = ({ showMessage }) => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const [redirectTo, setRedirectTo] = useState('');
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,9 +27,8 @@ const LoginForm = ({ showMessage }) => {
       localStorage.setItem('token', response.data.token);
       setMessage('ログインしました');
       setMessageType('success');
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
+      setIsLoggedIn(true);
+      navigate('/');
     } catch (error) {
       setMessage('ログインに失敗しました もう一度お試しください');
       setMessageType('error');
@@ -37,7 +37,6 @@ const LoginForm = ({ showMessage }) => {
 
   const handleCloseSnackbar = () => {
     setMessage('');
-    setRedirectTo('');
   }
 
   return (
@@ -63,7 +62,6 @@ const LoginForm = ({ showMessage }) => {
           message={message}
           type={messageType}
           onClose={handleCloseSnackbar}
-          redirectTo={redirectTo}
         />
       )}
       <Link to='/'></Link>
