@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import SubmitButton from './SubmitButton';
+import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const UserDeleteForm = () => {
   const [message, setMessage] = useState('');
+  const { setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleDelete = async (event) => {
     event.preventDefault();
@@ -28,6 +32,8 @@ const UserDeleteForm = () => {
 
       setMessage(response.data.message);
       localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      navigate('/');
     } catch (error) {
       console.error('退会処理中にエラーが発生しました', error);
     }
