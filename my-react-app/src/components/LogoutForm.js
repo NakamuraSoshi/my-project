@@ -38,6 +38,8 @@ const LogoutForm = () => {
       navigate('/');
     } catch (error) {
       console.error('ログアウト時にエラーが発生しました', error);
+      localStorage.removeItem('token'); 
+      navigate('/');
     }
   };
 
