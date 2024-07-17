@@ -16,7 +16,9 @@ const loginUser = (req, res) => {
       return res.status(401).json({ message: 'ユーザー名またはパスワードが無効です' });
     }
 
+    //console.log(users.password); 確認用
     const user = users[0];
+    //console.log(user.password); 確認用
 
     // パスワードの比較 compareでパスワードから変換するHash値が分かる
     bcrypt.compare(password, user.password, (err, result) => {
@@ -29,7 +31,7 @@ const loginUser = (req, res) => {
 
       // JWT トークンの生成 ペイロード情報にIdと名前を含む secretkeyで署名
       const token = jwt.sign({ userId: user.userId, username: user.username }, secretKey, {
-        expiresIn: '1h' // トークンの有効期限
+        expiresIn: '10m' // トークンの有効期限
         
       });
 
