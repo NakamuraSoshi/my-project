@@ -10,7 +10,7 @@ const router = express.Router();
 const { registerUser } = require('../controllers/userRegister');
 const { loginUser } = require('../controllers/userLogin');
 const { logoutUser } = require('../controllers/userLogout');
-const verifyToken = require('../middleware/authJwt');
+const verifyToken = require('../middleware/authJwt.js');
 const { deleteUser } = require('../controllers/userDelete');
 
 //ルーティングを設定、パスにリクエストが送信されると関数を実行
