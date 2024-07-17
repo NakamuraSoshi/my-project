@@ -10,6 +10,7 @@ const NewPost = () => {
   const [ message, setMessage] = useState('');
   const [ error, setError ] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,16 +29,26 @@ const NewPost = () => {
       return;
     }
 
+    if(!token) {
+      setMessage('トークンがありません。再ログインしてください');
+      navigate('/');
+      return;
+    }
+
     try{
-      const response = await axios.post('http://localhost:3001/api/posts', {
+      const response = await axios.post('http://localhost:3001/api/posts/create', {
         title,
         content,
+      },{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMessage(response.data.message);
       navigate('/');
     } catch (error) {
-      setMessage('投稿に失敗しました。もう一度お試しください');
+      setMessage(error.response.data.message || '投稿に失敗しました。もう一度お試しください');
     }
   };
 
@@ -56,7 +67,7 @@ const NewPost = () => {
       type="text"
       value={content}
       onChange={(e) => setContent(e.target.value)}
-      error={error.context}
+      error={error.content}
       />
       <SubmitButton text="投稿"/>
       {message && <p>{message}</p>}
