@@ -36,6 +36,8 @@ const UserDeleteForm = () => {
       navigate('/');
     } catch (error) {
       console.error('退会処理中にエラーが発生しました', error);
+      localStorage.removeItem('token'); 
+      navigate('/');
     }
   };
 
