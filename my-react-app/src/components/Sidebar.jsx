@@ -27,6 +27,7 @@ const Sidebar = () => {
         <Link to="/create">
           <button type="submit">新規作成</button>
         </Link>
+        <button type="submit">マイページ</button>
       </div>
     )}
       <nav>
@@ -48,6 +49,7 @@ const Sidebar = () => {
               <li>
                 <a href={`/delete`}>ユーザー削除</a>
               </li>
+              
             </>
           )}
         </ul>
