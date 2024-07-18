@@ -10,9 +10,11 @@ const router = express.Router();
 const { createPost } = require('../controllers/postCreate');
 const { deletePost } = require('../controllers/postDelete'); 
 const verifyToken = require('../middleware/authJwt.js');
+const { myPost } = require('../controllers/mypostDisplay');
 
 //ルーティングを設定、パスにリクエストが送信されると関数を実行
 router.post('/create',verifyToken, createPost);
 router.delete('/delete',verifyToken, deletePost);
+router.get('/mypost',verifyToken, myPost);
 
 module.exports = router;
