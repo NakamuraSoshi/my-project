@@ -19,7 +19,7 @@ const Post = {
   },
   //投稿を削除するメソッド
   delete: (postId, userId, callback) => {
-    const query = 'DELETE FROM posts WHERE id = ? AND userId = ?';
+    const query = 'DELETE FROM posts WHERE userId = ? AND userId = ?';
     db.query(query, [postId, userId], (err, result) => {
       if (err) {
         return callback(err);
@@ -31,6 +31,17 @@ const Post = {
       } else {
         callback(new Error('Post not found or user not authorized'));
       }
+    });
+  },
+
+  find: (userId, callback) => {
+    const query = 'SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC';
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+
+      callback(null, results);
     });
   },
 };
