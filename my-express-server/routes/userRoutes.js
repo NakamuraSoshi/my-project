@@ -12,11 +12,13 @@ const { loginUser } = require('../controllers/userLogin');
 const { logoutUser } = require('../controllers/userLogout');
 const verifyToken = require('../middleware/authJwt.js');
 const { deleteUser } = require('../controllers/userDelete');
+const { infoUser } = require('../controllers/userInfo.js');
 
 //ルーティングを設定、パスにリクエストが送信されると関数を実行
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', verifyToken, logoutUser);
 router.post('/delete', verifyToken, deleteUser);
+router.get('/info', verifyToken, infoUser);
 
 module.exports = router;
