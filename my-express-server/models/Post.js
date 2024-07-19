@@ -1,4 +1,4 @@
-const connection = require('../config/database');
+const db = require('../config/database');
 
 const Post = {
   //投稿を作成するメソッド
@@ -19,12 +19,13 @@ const Post = {
   },
   //投稿を削除するメソッド
   delete: (postId, userId, callback) => {
-    const query = 'DELETE FROM posts WHERE userId = ? AND userId = ?';
+    const query = 'DELETE FROM posts WHERE postId = ? AND userId = ?';
     db.query(query, [postId, userId], (err, result) => {
       if (err) {
         return callback(err);
       }
 
+      //確認用
       console.log(result);
       if (result.affectedRows > 0) {
         callback(null, result.affectedRows);
@@ -36,7 +37,7 @@ const Post = {
 
   find: (userId, callback) => {
     const query = 'SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC';
-    connection.query(query, [userId], (err, results) => {
+    db.query(query, [userId], (err, results) => {
       if (err) {
         return callback(err);
       }
@@ -44,6 +45,16 @@ const Post = {
       callback(null, results);
     });
   },
+
+  findAll: (callback) => {
+    const query = 'SELECT * FROM posts ORDER BY createdAt DESC';
+    db.query(query, (err, results) => {
+      if(err) {
+        return callback(err);
+      }
+      callback(null, results);
+    });
+  }
 };
 
 module.exports = Post;
