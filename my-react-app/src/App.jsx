@@ -13,6 +13,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import NewPost from './components/NewPost';
 import MyPage from './components/MyPage'; 
 import { UserProvider } from './contexts/UserContext';
+import HomePage from './components/HomePage';
 
 const App = () => {
     const [message, setMessage] = useState('');
@@ -39,6 +40,7 @@ const App = () => {
                     <Router>
                         <Routes>
                             <Route path='/' element={<Start showMessage={showMessage} />}>
+                                <Route index element={<HomePage />} />
                                 <Route path='login' element={<LoginForm showMessage={showMessage} />} />
                                 <Route path='register' element={<RegisterForm showMessage={showMessage} />} />
                                 <Route path='logout' element={<LogoutForm showMessage={showMessage} />} />
