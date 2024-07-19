@@ -34,22 +34,25 @@ const Sidebar = () => {
     )}
       <nav>
         <ul>
+          <li>
+            <Link to="/">ホームページ</Link>
+          </li>
           {!isLoggedIn ? (
             <>
               <li>
-                <a href={`/login`}>ログイン</a>
+                <Link to="/login">ログイン</Link>
               </li>
               <li>
-                <a href={`/register`}>新規登録</a>
+                <Link to="/register">新規登録</Link>
               </li>
             </>
           ) : (
             <>
               <li>
-                <a href={`/logout`}>ログアウト</a>
+                <Link to="/logout">ログアウト</Link>
               </li>
               <li>
-                <a href={`/delete`}>ユーザー削除</a>
+                <Link to="/delete">ユーザー削除</Link>
               </li>
               
             </>
