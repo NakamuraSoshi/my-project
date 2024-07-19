@@ -2,7 +2,7 @@ const Post = require('../models/Post');
 
 const deletePost = (req, res) => {
   const { userId } = req.user;
-  const { postId } = req.params;
+  const { postId } = req.body;
 
   if (!postId) {
     return res.status(400).json({ message: '投稿IDが見つかりません' });
