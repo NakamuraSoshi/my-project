@@ -4,32 +4,41 @@ import axios from 'axios';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const fetchUser = async () => {
-                try {
-                    const response = await axios.get('http://localhost:3001/api/users/info', {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    setUser(response.data);
-                    
-                } catch (error) {
-                    console.error('ユーザー情報の取得に失敗しました', error);
-                }
-            };
-
-            fetchUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await axios.get('http://localhost:3001/api/users/info', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUser(response.data);
+        } catch (error) {
+          console.error('ユーザー情報の取得に失敗しました', error);
+        } finally {
+          setLoading(false);
         }
-    }, []);
+      } else {
+        setLoading(false);
+      }
+    };
 
-    return (
-        <UserContext.Provider value={{ user }}>
-            {children}
-        </UserContext.Provider>
-    );
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
+
