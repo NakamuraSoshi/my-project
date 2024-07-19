@@ -5,11 +5,11 @@ import axios from 'axios';
 const MyPage = () => {
   const { user } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // ローディング状態を追加
-  const [error, setError] = useState(null); // エラー状態を追加
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
-    // userが存在する場合のみ投稿を取得
+    // userが存在する場合のみ投稿を取得,fetchPostsの定義
     if (user) {
       console.log('ユーザーID:', user.userId);
       const fetchPosts = async () => {
@@ -20,42 +20,59 @@ const MyPage = () => {
               Authorization: `Bearer ${token}`,
             },
           });
+          console.log('投稿データ:', response.data);//確認用
           setPosts(response.data);
         } catch (error) {
-          console.error('投稿の取得に失敗しました', error);
           setError('投稿の取得に失敗しました');
         } finally {
-          setLoading(false); // ローディング状態を解除
+          setLoading(false); 
         }
       };
 
+      //実行してデータ取得
       fetchPosts();
     } else {
-      setLoading(false); // userが存在しない場合もローディング状態を解除
+      setLoading(false);
     }
   }, [user]);
 
   const handleDelete = async (postId) => {
+    // 削除確認ダイアログを表示
+    const isConfirmed = window.confirm('投稿を削除しますか？');
+  
+    if (!isConfirmed) {
+
+      return;
+    }
+  
     try {
-      await axios.delete(`/api/posts/`);
-      setPosts(posts.filter(post => post.id !== postId));
-      // 成功メッセージなどを表示する場合はここで追加する
+      await axios.delete(`http://localhost:3001/api/posts/delete`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: {
+          postId: postId
+        }
+      });
+  
+      // 成功した場合は投稿リストを更新
+      setPosts(posts.filter(post => post.postId !== postId));
     } catch (error) {
       console.error('投稿の削除に失敗しました', error);
-      // エラーメッセージを設定する
+      setError('投稿の削除に失敗しました');
     }
   };
-
+  
   if (loading) {
-    return <div>Loading...</div>; // ローディング中の表示
+    return <div>Loading...</div>; 
   }
 
   if (error) {
-    return <div>{error}</div>; // エラーがある場合の表示
+    return <div>{error}</div>; 
   }
 
   if (!user) {
-    return <div>ユーザー情報が見つかりません</div>; // ユーザーが存在しない場合の表示
+    return <div>ユーザー情報が見つかりません</div>; 
   }
 
   return (
@@ -65,10 +82,10 @@ const MyPage = () => {
       <h3>投稿一覧</h3>
       <ul>
         {posts.map(post => (
-          <li key={post.id}>
+          <li key={post.postId}>
             <h4>{post.title}</h4>
             <p>{post.content}</p>
-            <button onClick={() => handleDelete(post.id)}>削除</button>
+            <button onClick={() => handleDelete(post.postId)}>削除</button>
           </li>
         ))}
       </ul>
