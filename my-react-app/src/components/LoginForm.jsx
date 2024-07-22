@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../styles/user.css';
 import Snackbar from './Snackbar';
 import { AuthContext } from '../contexts/AuthContext';
@@ -13,7 +13,6 @@ const LoginForm = ({ showMessage }) => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const navigate = useNavigate();
   const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
@@ -28,7 +27,7 @@ const LoginForm = ({ showMessage }) => {
       setMessage('ログインしました');
       setMessageType('success');
       setIsLoggedIn(true);
-      navigate('/');
+      window.location.href = '/';
     } catch (error) {
       setMessage('ログインに失敗しました もう一度お試しください');
       setMessageType('error');
