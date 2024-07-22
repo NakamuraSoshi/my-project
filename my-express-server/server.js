@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
+const likeRoutes = require('./routes/likeRoutes')
 
 //Expressアプリオブジェを作成
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 //パスに対してuserRoutesで定義したルーティングを使用する設定
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/likes', likeRoutes);
 
 //アプリを指定したポートで起動
 app.listen(PORT, () => {
