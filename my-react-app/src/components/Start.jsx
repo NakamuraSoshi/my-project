@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 const Start = () => {
   return (
     <div>
-      <SidebarButton /> 
+      <SidebarButton />
       <Sidebar />
       <div id="detail">
         <Outlet/>
