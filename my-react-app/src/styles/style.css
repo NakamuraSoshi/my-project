@@ -4,7 +4,7 @@ body {
 
 #sidebar {
   position: fixed;
-  left: -280px;  /* 初期状態は非表示 */
+  left: -280px; 
   top: 0;
   width: 250px;
   height: 100%;
