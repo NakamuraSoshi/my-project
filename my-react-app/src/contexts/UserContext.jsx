@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+//ユーザー情報を共有
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
