@@ -85,6 +85,7 @@ const MyPage = () => {
           <li key={post.postId}>
             <h4>{post.title}</h4>
             <p>{post.content}</p>
+            <small>投稿日: {new Date(post.createdAt).toLocaleString()}</small>
             <button onClick={() => handleDelete(post.postId)}>削除</button>
           </li>
         ))}
