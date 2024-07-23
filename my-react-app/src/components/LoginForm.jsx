@@ -1,19 +1,20 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
-import InputField from './InputField';
-import SubmitButton from './SubmitButton';
+import { TextField, Button, Container, Typography, Snackbar, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
-import '../styles/user.css';
-import Snackbar from './Snackbar';
 import { AuthContext } from '../contexts/AuthContext';
+import { UserContext } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 //useStateで状態管理
-const LoginForm = ({ showMessage }) => {
+const LoginForm = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn} = useContext(AuthContext);
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,12 +23,14 @@ const LoginForm = ({ showMessage }) => {
         userId,
         password
       });
-      //ログイン成功でサーバーから返されたJWTトークンをローカルストレージに保存
+
+      //ログイン成功でトークンをローカルストレージに保存、userをセット、
       localStorage.setItem('token', response.data.token);
+      setUser(response.data.user);
       setMessage('ログインしました');
       setMessageType('success');
       setIsLoggedIn(true);
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       setMessage('ログインに失敗しました もう一度お試しください');
       setMessageType('error');
@@ -39,32 +42,51 @@ const LoginForm = ({ showMessage }) => {
   }
 
   return (
-    <div>
-      <h2>ログイン</h2>
+    <Container maxWidth="xs">
+      <Typography variant="h4" component="h1" gutterBottom>
+        ログイン
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <InputField
-          label="ユーザーID:"
-          type="text"
+        <TextField
+          label="ユーザーID"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
-        <InputField
-          label="パスワード:"
+        <TextField
+          label="パスワード"
           type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <SubmitButton text="ログイン" />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          style={{ marginTop: '16px' }}
+        >
+          ログイン
+        </Button>
       </form>
-      {message && (
-        <Snackbar
-          message={message}
-          type={messageType}
-          onClose={handleCloseSnackbar}
-        />
-      )}
-      <Link to='/'></Link>
-    </div>
+      <Link to="/" style={{ textDecoration: 'none', marginTop: '16px', display: 'block' }}>
+        <Button variant="text" fullWidth>ホームへ戻る</Button>
+      </Link>
+      <Snackbar
+        open={!!message}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={messageType} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 };
 
