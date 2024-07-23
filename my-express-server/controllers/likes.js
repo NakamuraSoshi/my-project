@@ -33,8 +33,20 @@ const getLikeCount = (req, res) => {
   });
 };
 
+const unlikePost = (req, res) => {
+  const { userId, postId } = req.body;
+  Like.unlikePost(userId, postId, (error) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'いいねの解除に失敗しました' });
+    }
+    res.status(200).json({ message: 'いいねを取り消しました' });
+  });
+};
+
 module.exports = {
   likePost,
   checkLikeStatus,
-  getLikeCount
+  getLikeCount,
+  unlikePost 
 };
