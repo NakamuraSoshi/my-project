@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useSidebar } from '../contexts/SidebarContext';
 import { AuthContext } from '../contexts/AuthContext';
+import Search from './Search';
 import '../styles/style.css';
 
 //フックでサイドバーとログインの状態を取得
@@ -13,17 +14,7 @@ const Sidebar = () => {
     <div id="sidebar" className={sidebarOpen ? 'open' : ''}>
     {isLoggedIn && (
       <div>
-        <form id="search-form" role="search">
-          <input
-            id="q"
-            aria-label="ブログを検索"
-            placeholder="検索"
-            type="search"
-            name="q"
-          />
-          <div id="search-spinner" aria-hidden hidden={true} />
-          <div className="sr-only" aria-live="polite"></div>
-        </form>
+        <Search />
         <Link to="/create">
           <button type="submit">新規作成</button>
         </Link>
