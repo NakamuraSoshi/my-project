@@ -47,10 +47,32 @@ const Post = {
   },
 
   findAll: (callback) => {
-    const query = 'SELECT * FROM posts ORDER BY createdAt DESC';
+    const query = `
+        SELECT p.postId, p.title, p.content, p.createdAt, u.username
+        FROM posts p
+        JOIN users u ON p.userId = u.userId
+        ORDER BY p.createdAt DESC
+    `;
     db.query(query, (err, results) => {
       if(err) {
         return callback(err);
+      }
+      callback(null, results);
+    });
+  },
+
+  search: (query, callback) => {
+    const sqlQuery = `
+      SELECT posts.*, users.username, 
+      (SELECT COUNT(*) FROM likes WHERE likes.postId = posts.postId) as likeCount
+      FROM posts
+      JOIN users ON posts.userId = users.userId
+      WHERE posts.title LIKE ? OR posts.content LIKE ?
+    `;
+    const likeQuery = `%${query}%`;
+    db.query(sqlQuery, [likeQuery, likeQuery], (error, results) => {
+      if (error) {
+        return callback(error);
       }
       callback(null, results);
     });
