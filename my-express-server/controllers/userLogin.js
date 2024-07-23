@@ -38,7 +38,7 @@ const loginUser = (req, res) => {
       console.log('生成されたトークン:', token);//確認用
 
       // トークンをクライアントに送信
-      res.status(200).json({ token });
+      res.status(200).json({ token, user: { userId: user.userId, username: user.username } });
     });
   });
 };
