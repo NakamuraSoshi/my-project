@@ -12,6 +12,17 @@ const Like = {
     });
   },
 
+  //いいね削除
+  unlikePost: (userId, postId, callback) => {
+    const query = 'DELETE FROM likes WHERE userId = ? AND postId = ?';
+    db.query(query, [userId, postId], (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, result);
+    });
+  },
+
   //いいね数取得
   countLikes: (postId, callback) => {
     const query = 'SELECT COUNT(*) as likeCount FROM likes WHERE postId = ?';
