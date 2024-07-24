@@ -1,4 +1,4 @@
-//expressアプリのルーティングとボディパーサーでinputの値を受け取り
+//expressアプリのルーティングとボディパーサーで値を受け取り
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -10,7 +10,7 @@ const likeRoutes = require('./routes/likeRoutes')
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-//Expressアプリで受信したjson形式のリクエストボディはreq.bodyへ格納
+//Expressアプリで受信したリクエストはreq.bodyへ格納
 app.use(bodyParser.json());
 app.use(cors());
 
