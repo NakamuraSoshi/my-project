@@ -3,6 +3,7 @@ import axios from 'axios';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 
+//ユーザー登録フォーム
 const RegisterForm = () => {
   const [userId, setUserId] = useState('');
   const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const RegisterForm = () => {
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({});
 
+  //フォームの入力値を検証、エラーメッセージをnewErrorsに保存
   const validate = () => {
     const newErrors = {};
     const alphanumeric = /^[a-zA-Z0-9]+$/;
@@ -44,6 +46,7 @@ const RegisterForm = () => {
     }
   };
 
+  //レンダリング
   return (
     <div>
       <h2>ユーザー登録</h2>
