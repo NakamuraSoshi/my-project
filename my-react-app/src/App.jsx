@@ -9,11 +9,13 @@ import { SidebarProvider } from './contexts/SidebarContext';
 import Snackbar from './components/Snackbar';
 import { AuthProvider } from './contexts/AuthContext';
 
-
+import SearchResults from './components/SearchResult';
 import NewPost from './components/NewPost';
 import MyPage from './components/MyPage'; 
 import { UserProvider } from './contexts/UserContext';
 import HomePage from './components/HomePage';
+
+
 
 const App = () => {
     const [message, setMessage] = useState('');
@@ -47,6 +49,7 @@ const App = () => {
                                 <Route path='delete' element={<UserDeleteForm showMessage={showMessage} />} />
                                 <Route path='create' element={<NewPost showMessage={showMessage} />} />
                                 <Route path='mypage' element={<MyPage />} /> 
+                                <Route path="/search" element={<SearchResults />} />
                             </Route>
                         </Routes>
                     </Router>
