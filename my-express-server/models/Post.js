@@ -35,6 +35,7 @@ const Post = {
     });
   },
 
+  //ユーザーIDから投稿の取得
   find: (userId, callback) => {
     const query = 'SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC';
     db.query(query, [userId], (err, results) => {
@@ -46,6 +47,7 @@ const Post = {
     });
   },
 
+  //すべての投稿とユーザー名を取得
   findAll: (callback) => {
     const query = `
         SELECT p.postId, p.title, p.content, p.createdAt, u.username
@@ -61,6 +63,7 @@ const Post = {
     });
   },
 
+  //postsテーブルのtitleとcontentカラムから部分一致検索
   search: (query, callback) => {
     const sqlQuery = `
       SELECT posts.*, users.username, 
