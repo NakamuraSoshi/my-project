@@ -1,34 +1,35 @@
-//トークン認証を行う
 const jwt = require('jsonwebtoken');
 const { secretKey } = require('../config/authConfig');
-const { isTokenBlacklisted } = require('../controllers/userLogout');
+const { isTokenBlacklisted } = require('../controllers/user/userLogout');
+const HttpStatus = require('../config/httpStatus');
 
-//verifyToken関数でトークンの検証,req.headerからトークン取得
+// verifyToken関数でトークンの検証
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  // クッキーからトークンを取得
+  const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ message: 'トークンが提供されていません' });
+    return res.status(HttpStatus.認証エラー).json({ message: 'トークンが提供されていません' });
   }
 
   // ブラックリストにトークンが含まれているかをチェック
   if (isTokenBlacklisted(token)) {
-    console.log('ブラックリストにあるトークンです'); //確認用
-    return res.status(403).json({ message: 'トークンが無効です' });
+    console.log('ブラックリストにあるトークンです'); // 確認用
+    return res.status(HttpStatus.権限がありません).json({ message: 'トークンが無効です' });
   }
 
-  //jwtの検証、secretkeyで署名を検証、正当ならuserをreqへ
+  // jwtの検証、secretKeyで署名を検証、正当ならuserをreqへ
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
-      console.log('トークンが無効です'); //確認用
-      return res.status(403).json({ message: 'トークンが無効です' });
+      console.log('トークンが無効です'); // 確認用
+      return res.status(HttpStatus.権限がありません).json({ message: 'トークンが無効です' });
     }
     req.user = user;
 
-    //次のルートへ
+    // 次のミドルウェアまたはルートハンドラへ
     next();
   });
 };
 
 module.exports = verifyToken;
+
