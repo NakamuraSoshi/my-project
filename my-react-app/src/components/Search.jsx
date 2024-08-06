@@ -14,7 +14,7 @@ const Search = () => {
   //ボタンを押すと実行
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    navigate(`/search?query=${searchQuery}`);
+    navigate(`/search?searchTerm=${searchQuery}`);
   };
 
   return (
@@ -24,7 +24,7 @@ const Search = () => {
         aria-label="ブログを検索"
         placeholder="検索"
         type="search"
-        name="q"
+        name="searchTerm"
         value={searchQuery}
         onChange={handleSearchChange}
       />
