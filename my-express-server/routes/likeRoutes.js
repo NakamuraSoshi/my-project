@@ -7,13 +7,14 @@ const express = require('express');
 const router = express.Router();
 
 //requireでそれぞれのコントローラー関数を読み込み
-const { likePost, checkLikeStatus, getLikeCount, unlikePost } = require('../controllers/likes');
+const { giveLike } = require('../controllers/like/likeGive');
+const { getLikeStatusAndCount } = require('../controllers/like/likeGetStatusAndCount');
+const { cancelLike } = require('../controllers/like/likeCancel');
 const verifyToken = require('../middleware/authJwt');
 
 //ルーティングを設定、パスにリクエストが送信されると関数を実行
-router.post('/like',verifyToken, likePost);
-router.get('/check',verifyToken, checkLikeStatus);
-router.get('/count',verifyToken, getLikeCount);
-router.post('/unlike', verifyToken, unlikePost);
+router.post('/like',verifyToken, giveLike);
+router.get('/status',verifyToken, getLikeStatusAndCount);
+router.delete('/unlike', verifyToken, cancelLike);
 
 module.exports = router;
