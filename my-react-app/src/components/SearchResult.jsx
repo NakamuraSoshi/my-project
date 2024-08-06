@@ -1,48 +1,64 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import LikeButton from './LikeButton';
 import { UserContext } from '../contexts/UserContext';
+import BaseURL from '../config/url';
+import { Container, Typography, Snackbar, Alert, List } from '@mui/material';
+import PostDisplay from './PostDisplay';
 
 const SearchResults = () => {
   const { user } = useContext(UserContext);
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(''); // エラーメッセージの状態
   const location = useLocation();
-  const query = new URLSearchParams(location.search).get('query');
+  const searchTerm = new URLSearchParams(location.search).get('searchTerm');
 
-
+  // 検索結果の取得
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/posts/search', {
-          params: { query }
+        const response = await axios.get(`${BaseURL}/posts/search`, {
+          params: { searchTerm },
+          withCredentials: true, // クッキーを送信するために `withCredentials` を設定
         });
         setResults(response.data);
       } catch (error) {
         console.error('検索結果の取得に失敗しました', error);
+        setError('検索結果の取得に失敗しました。後でもう一度お試しください。'); // エラーメッセージを設定
       }
     };
 
-    if (query) {
+    if (searchTerm) {
       fetchResults();
     }
-  }, [query]);
+  }, [searchTerm]);
+
+  const handleCloseSnackbar = () => {
+    setError('');
+  };
 
   return (
-    <div>
-      <h1>検索結果</h1>
-      <ul>
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        検索結果
+      </Typography>
+      {error && (
+        <Snackbar
+          open={!!error}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+        >
+          <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+            {error}
+          </Alert>
+        </Snackbar>
+      )}
+      <List>
         {results.map(post => (
-          <li key={post.postId}>
-            <h4>{post.title}</h4>
-            <p>{post.content}</p>
-            <small>投稿者: {post.username}</small>
-            <small>投稿日: {new Date(post.createdAt).toLocaleString()}</small>
-            <LikeButton userId={user.userId} postId={post.postId} />
-          </li>
+          <PostDisplay key={post.postId} post={post} user={user} />
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 };
 
