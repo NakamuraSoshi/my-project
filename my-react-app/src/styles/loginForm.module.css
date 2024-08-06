@@ -1,0 +1,19 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.submitButton {
+  margin-top: 16px;
+}
+
+.homeLink {
+  text-decoration: none;
+  margin-top: 16px;
+  display: block;
+}
+
