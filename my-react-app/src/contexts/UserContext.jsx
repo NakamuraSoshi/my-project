@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import BaseURL from '../config/url';
 
 //ユーザー情報を共有
 export const UserContext = createContext();
@@ -11,21 +12,15 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await axios.get('http://localhost:3001/api/users/info', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setUser(response.data);
-        } catch (error) {
-          console.error('ユーザー情報の取得に失敗しました', error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
+      try {
+        const response = await axios.get(`${BaseURL}/users/info`, {
+          // クッキーから自動的に認証情報を送信するために`withCredentials`を設定
+          withCredentials: true,
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('ユーザー情報の取得に失敗しました', error);
+      } finally {
         setLoading(false);
       }
     };
