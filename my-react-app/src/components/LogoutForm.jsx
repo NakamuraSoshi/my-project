@@ -4,6 +4,7 @@ import { Container, Typography, Button, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { UserContext } from '../contexts/UserContext';
+import BaseURL from '../config/url';
 
 const LogoutForm = () => {
   const [message, setMessage] = useState('');
@@ -15,24 +16,15 @@ const LogoutForm = () => {
   const handleLogout = async (event) => {
     event.preventDefault(); 
     try {
-      const token = localStorage.getItem('token'); 
-      if(!token) {
-        console.error('トークンが存在しません');
-        return;
-      }
-      console.log('送信トークン:', token);
       const response = await axios.post(
-        'http://localhost:3001/api/users/logout',
+        `${BaseURL}/users/logout`,
         {},
         {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          withCredentials: true // クッキーをリクエストに含める
         }
       );
       setMessage(response.data.message); 
       setMessageType('success');
-      localStorage.removeItem('token'); 
       setIsLoggedIn(false);
       console.log('ログアウトしました');
       setUser(null);
@@ -41,9 +33,9 @@ const LogoutForm = () => {
       console.error('ログアウト時にエラーが発生しました', error);
       setMessage('ログアウト時にエラーが発生しました');
       setMessageType('error');
-      localStorage.removeItem('token'); 
       setIsLoggedIn(false);
-      window.location.href = '/';
+      setUser(null);
+      navigate('/');
     }
   };
 
