@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { UserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
+import BaseURL from '../config/url';
+import styles from '../styles/loginForm.module.css'
+import { MESSAGE_TYPES, COLORS, SNACKBAR_SETTINGS } from '../config/constants';
 
 //useStateで状態管理
 const LoginForm = () => {
@@ -19,21 +22,23 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/users/login', {
+      const response = await axios.post(`${BaseURL}/users/login`, {
         userId,
         password
+      }, {
+        withCredentials: true // クッキーを含むリクエストを送信
       });
 
-      //ログイン成功でトークンをローカルストレージに保存、userをセット、
-      localStorage.setItem('token', response.data.token);
+      //ログイン成功でuserをセット、
+
       setUser(response.data.user);
       setMessage('ログインしました');
-      setMessageType('success');
+      setMessageType(MESSAGE_TYPES.SUCCESS);
       setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
       setMessage('ログインに失敗しました もう一度お試しください');
-      setMessageType('error');
+      setMessageType(MESSAGE_TYPES.ERROR);
     }
   };
 
@@ -42,8 +47,8 @@ const LoginForm = () => {
   }
 
   return (
-    <Container maxWidth="xs">
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Container className={styles.container}>
+      <Typography variant="h4" component="h1" className={styles.title}>
         ログイン
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -67,19 +72,19 @@ const LoginForm = () => {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color={COLORS.PRIMARY}
           fullWidth
-          style={{ marginTop: '16px' }}
+          className={styles.submitButton}
         >
           ログイン
         </Button>
       </form>
-      <Link to="/" style={{ textDecoration: 'none', marginTop: '16px', display: 'block' }}>
+      <Link to="/" className={styles.homeLink}>
         <Button variant="text" fullWidth>ホームへ戻る</Button>
       </Link>
       <Snackbar
         open={!!message}
-        autoHideDuration={6000}
+        autoHideDuration={SNACKBAR_SETTINGS.AUTO_HIDE_DURATION}
         onClose={handleCloseSnackbar}
       >
         <Alert onClose={handleCloseSnackbar} severity={messageType} sx={{ width: '100%' }}>
