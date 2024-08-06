@@ -1,5 +1,5 @@
 //dbモジュールをインポート
-const db = require('../config/database');
+const {db} = require('../config/database');
 
 //Userオブジェクトを定義、createメソッドで新しいユーザーをDBに登録
 const User = {
@@ -21,11 +21,40 @@ const User = {
 
   //ユーザー削除
   delete: (userId, callback) => {
-    const query = 'DELETE FROM users WHERE userId = ?';
-    db.query(query, [userId], callback);
+    // トランザクションを開始
+    db.beginTransaction(err => {
+      if (err) return callback(err);
+
+      // `likes` テーブルから削除
+      db.query('DELETE FROM likes WHERE userId = ?', [userId], (error) => {
+        if (error) {
+          return db.rollback(() => callback(error));
+        }
+
+        // `posts` テーブルから削除
+        db.query('DELETE FROM posts WHERE userId = ?', [userId], (error) => {
+          if (error) {
+            return db.rollback(() => callback(error));
+          }
+
+          // `users` テーブルから削除
+          db.query('DELETE FROM users WHERE userId = ?', [userId], (error) => {
+            if (error) {
+              return db.rollback(() => callback(error));
+            }
+
+            // トランザクションをコミット
+            db.commit((err) => {
+              if (err) {
+                return db.rollback(() => callback(err));
+              }
+              callback(null, { message: 'ユーザーを削除しました' });
+            });
+          });
+        });
+      });
+    });
   }
 };
 
-// Userオブジェクトをエクスポート
 module.exports = User;
-
