@@ -6,7 +6,7 @@ import BaseURL from '../config/url';
 import { Container, Typography, Snackbar, Alert, List } from '@mui/material';
 import PostDisplay from './PostDisplay';
 
-const SearchResults = () => {
+const SearchResult = () => {
   const { user } = useContext(UserContext);
   const [results, setResults] = useState([]);
   const [error, setError] = useState(''); // エラーメッセージの状態
@@ -15,7 +15,7 @@ const SearchResults = () => {
 
   // 検索結果の取得
   useEffect(() => {
-    const fetchResults = async () => {
+    const fetchResult = async () => {
       try {
         const response = await axios.get(`${BaseURL}/posts/search`, {
           params: { searchTerm },
@@ -29,7 +29,7 @@ const SearchResults = () => {
     };
 
     if (searchTerm) {
-      fetchResults();
+      fetchResult();
     }
   }, [searchTerm]);
 
@@ -53,13 +53,19 @@ const SearchResults = () => {
           </Alert>
         </Snackbar>
       )}
-      <List>
-        {results.map(post => (
-          <PostDisplay key={post.postId} post={post} user={user} />
-        ))}
-      </List>
+      {results.length === 0 ? (
+        <Typography variant="body1" color="textSecondary">
+          検索結果が見つかりませんでした。
+        </Typography>
+      ) : (
+        <List>
+          {results.map(post => (
+            <PostDisplay key={post.postId} post={post} user={user} />
+          ))}
+        </List>
+      )}
     </Container>
   );
 };
 
-export default SearchResults;
+export default SearchResult;
