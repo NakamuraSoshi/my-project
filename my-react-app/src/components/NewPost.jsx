@@ -5,27 +5,31 @@ import InputField from "./InputField";
 import BaseURL from "../config/url";
 
 const NewPost = () => {
-  const [ title, setTitle ] = useState('');
-  const [ content, setContent ] = useState('');
-  const [ message, setMessage] = useState('');
-  const [ error, setError ] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  //バリデーションの関数
+  // バリデーションの関数
   const validateForm = () => {
     const errors = {};
 
-    if (title.length > 30) {
+    //trim()を使用して不用なスペースを除去させる
+    const trimmedTitle = title.trim();
+    const trimmedContent = content.trim();
+
+    if (trimmedTitle.length > 30) {
       errors.title = 'タイトルは30文字以内で入力してください';
     }
 
-    if (content.length > 100) {
+    if (trimmedContent.length > 100) {
       errors.content = '本文は100文字以内で入力してください';
     }
 
     return errors;
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,12 +40,14 @@ const NewPost = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
       const response = await axios.put(
         `${BaseURL}/posts/create`,
         {
-          title,
-          content,
+          title: title.trim(), // スペースを削除して送信
+          content: content.trim(), // スペースを削除して送信
         },
         {
           // クッキーを送信するために `withCredentials` を設定
@@ -53,6 +59,8 @@ const NewPost = () => {
       navigate('/');
     } catch (error) {
       setMessage(error.response?.data?.message || '投稿に失敗しました。もう一度お試しください');
+    } finally {
+      setIsSubmitting(false); // 成功またはエラー後にボタンを再度有効にする
     }
   };
 
@@ -74,7 +82,7 @@ const NewPost = () => {
         error={error.content}
       />
       
-      <button type="submit">投稿</button>
+      <button type="submit" disabled={isSubmitting}>投稿</button>
       
       {message && <p>{message}</p>}
     </form>
