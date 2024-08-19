@@ -19,10 +19,11 @@ const LoginForm = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
+  //handleSubmitにasyncを付けることでこの関数の返り値がPromiseオブジェクトになる
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${BaseURL}/users/login`, {
+      const response = await axios.post(`${BaseURL}/users/login`, { //awaitを付けることでthenみたいにPromiseの結果が返ってくるまで待ってくれる
         userId,
         password
       }, {
