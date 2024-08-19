@@ -32,14 +32,14 @@ const LikeButton = ({ userId, postId }) => {
   const handleLike = async () => {
     try {
       if (!isLiked) {
-        await axios.post(`${BaseURL}/likes/like`, { userId, postId }, {
+        await axios.post(`${BaseURL}/likes/like`, { userId, postId }, { //userIdなどのデータをリクエストボディとして送信
           withCredentials: true // クッキーを送信するために `withCredentials` を設定
         });
         setIsLiked(true);
         setLikeCount(prevLikes => Number(prevLikes) + 1);
       } else {
         await axios.delete(`${BaseURL}/likes/unlike`, {
-          params: { userId, postId },
+          params: { userId, postId }, //paramsオプションでクエリパラメータとしてデータをURLに含めて送信
           withCredentials: true // クッキーを送信するために `withCredentials` を設定
         });
         setIsLiked(false);
