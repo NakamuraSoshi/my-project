@@ -9,7 +9,7 @@ import LogoutForm from './components/LogoutForm';
 import UserDeleteForm from './components/UserDeleteForm';
 import NewPost from './components/NewPost';
 import MyPage from './components/MyPage'; 
-import SearchResults from './components/SearchResult';
+import SearchResult from './components/SearchResult';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { UserProvider } from './contexts/UserContext';
@@ -32,7 +32,7 @@ const App = () => {
                                 <Route path='delete' element={<UserDeleteForm  />} />
                                 <Route path='create' element={<NewPost  />} />
                                 <Route path='mypage' element={<MyPage />} /> 
-                                <Route path="/search" element={<SearchResults />} />
+                                <Route path="/search" element={<SearchResult />} />
                             </Route>
                         </Routes>
                     </Router>
